@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boo!</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #121212;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        #clickMe {
+            font-size: 48px;
+            cursor: pointer;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        #clickMe:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        .boo {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s;
+            font-size: 40px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="clickMe">Click Me First!</div>
+    <script>
+        const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', '#DAF7A6'];
+
+        document.getElementById('clickMe').addEventListener('click', function() {
+            this.style.display = 'none'; // Hide the click prompt
+
+            // Display "Boo" in the center
+            const bigBoo = document.createElement('div');
+            bigBoo.innerText = 'Boo';
+            bigBoo.style.fontSize = '100px';
+            bigBoo.style.color = colors[Math.floor(Math.random() * colors.length)];
+            bigBoo.style.opacity = 1;
+            document.body.appendChild(bigBoo);
+
+            // Fill the screen with "Boo"
+            setTimeout(() => {
+                bigBoo.style.opacity = 0;
+
+                const fillBoo = setInterval(() => {
+                    const boo = document.createElement('div');
+                    boo.className = 'boo';
+                    boo.innerText = 'Boo';
+                    boo.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    document.body.appendChild(boo);
+
+                    const x = Math.random() * (window.innerWidth - 100);
+                    const y = Math.random() * (window.innerHeight - 100);
+                    boo.style.left = `${x}px`;
+                    boo.style.top = `${y}px`;
+
+                    // Fade in effect
+                    requestAnimationFrame(() => {
+                        boo.style.opacity = 1;
+                    });
+
+                    setTimeout(() => {
+                        boo.style.opacity = 0;
+                        setTimeout(() => {
+                            boo.remove();
+                        }, 500);
+                    }, 2000);
+                }, 500);
+
+                // Stop filling after a few seconds
+                setTimeout(() => {
+                    clearInterval(fillBoo);
+                }, 5000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
